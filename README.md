@@ -45,15 +45,15 @@ Projekt má plochou, přehlednou strukturu ideální pro okamžité použití ve
 
 ```text
 JS-string-Playground/
-├── docs/                    # Podklady k lekci a metodické pokyny
-│   ├── JS_string_tahak.md    # Přehledný tahák metod pro studenty
-│   └── vesmirna_imigracni_kontrola.md # Detailní specifikace herního světa
-├── index.html                # Hlavní rozhraní s kompletním zadáním v hlavičce
-├── styles.css                # Imersivní retro sci-fi CRT styl rozhraní
-├── script.js                 # Plně funkční vzorové řešení (pro lektory)
-├── script-students.js        # Studentská šablona s označenými TODO a nápovědou
-├── LICENSE                   # Oficiální MIT licence (Jakub Březa, 2026)
-└── README.md                 # Tento didaktický průvodce
+├── docs/                                 # Podklady k lekci a metodické pokyny
+│   ├── JS_string_tahak.md                # Přehledný tahák metod pro studenty
+│   └── vesmirna_imigracni_kontrola.md    # Detailní specifikace herního světa
+├── index.html                            # Hlavní rozhraní s kompletním zadáním v hlavičce
+├── styles.css                            # Imersivní retro sci-fi CRT styl rozhraní
+├── script.js                             # Plně funkční vzorové řešení (pro lektory)
+├── script-students.js                    # Studentská šablona s označenými TODO a nápovědou
+├── LICENSE                               # Oficiální MIT licence (Jakub Březa, 2026)
+└── README.md                             # Tento didaktický průvodce
 ```
 
 ---
@@ -61,11 +61,11 @@ JS-string-Playground/
 ## 🚀 Jak projekt použít
 
 1. **Příprava studentů:**
-   * Seznamte studenty s metodami pro práci s řetězci v JS (využijte připravený tahák `.docs/JS_string_tahak.md`).
+   * Seznamte studenty s metodami pro práci s řetězci v JS (využijte připravený tahák `docs/JS_string_tahak.md`).
    * Vysvětlete jim podstatu cookies jako velkého textového řetězce, který ukládá prohlížeč.
 
 2. **Propojení studentského kódu:**
-   * Otevřete `index.html` a na řádku ~166 přepojte skript ze vzorového řešení na studentské:
+   * Otevřete `index.html` a na řádku ~195 přepojte skript ze vzorového řešení na studentské:
      ```html
      <!-- Změňte "script.js" na "script-students.js" -->
      <script src="script-students.js"></script>
