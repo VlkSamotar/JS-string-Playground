@@ -45,7 +45,7 @@ Projekt má plochou, přehlednou strukturu ideální pro okamžité použití ve
 
 ```text
 JS-string-Playground/
-├── .docs/                    # Podklady k lekci a metodické pokyny
+├── docs/                    # Podklady k lekci a metodické pokyny
 │   ├── JS_string_tahak.md    # Přehledný tahák metod pro studenty
 │   └── vesmirna_imigracni_kontrola.md # Detailní specifikace herního světa
 ├── index.html                # Hlavní rozhraní s kompletním zadáním v hlavičce
