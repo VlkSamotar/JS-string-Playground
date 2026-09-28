@@ -1,0 +1,253 @@
+<!--
+================================================================================
+🛸 GALACTIC BORDER CONTROL — INTERAKTIVNÍ PLAYGROUND PRO PRÁCI S ŘETĚZCI A COOKIES
+================================================================================
+
+Téma: Galaktická imigrační kontrola na orbitální stanici ORBIT-9
+Cíl cvičení: Naučit se manipulovat s datovým typem String a se soubory Cookies v JS.
+
+--------------------------------------------------------------------------------
+🥉 ÚROVEŇ 1 – Očista Galaktického Pasu (Passport Sanitizer)
+--------------------------------------------------------------------------------
+Úkol: Vyčisti a naformátuj vstupní ID pasu a domovskou planetu mimozemšťana.
+Metody k použití: .trim(), .toUpperCase(), .padStart(), Template Literals.
+Specifikace:
+  - Odstraň z ID pasu úvodní a koncové mezery (.trim()).
+  - Převeď ID na velká písmena (.toUpperCase()).
+  - Pokud je očištěné ID kratší než 8 znaků, doplň ho zleva nulami na celkovou délku 8 (.padStart(8, '0')).
+  - Výsledný kód spoj s prefixem "GAL-" pomocí template literals (např. "GAL-00XORG9").
+  - Domovskou planetu očisti od mezer a převeď na velká písmena.
+
+--------------------------------------------------------------------------------
+🥈 ÚROVEŇ 2 – Bezpečnostní Skener a Karanténa (Security Check)
+--------------------------------------------------------------------------------
+Úkol: Prověř bezpečnostní poznámky detektoru a urči status vstupu.
+Metody k použití: .includes(), .startsWith(), .endsWith(), podmínky if/else.
+Specifikace:
+  - Pokud poznámka obsahuje slovo "kyselina" nebo "zbran" (velká i malá písmena), status je "NEBEZPEČÍ" (červený).
+  - Pokud planeta začíná na "EARTH" (Země), status je "VSTUP POVOLEN — DIPLOMATICKÁ VÝSADA" (zelený).
+  - Pokud poznámka končí vykřičníkem "!", status je "KARANTÉNA — PODROBNÁ PROHLÍDKA" (oranžový).
+  - V ostatních případech je status "VSTUP POVOLEN" (zelený).
+
+--------------------------------------------------------------------------------
+🥇 ÚROVEŇ 3 – Dekodér Depeše a Přihlášení Důstojníka (Translator & Cookies)
+--------------------------------------------------------------------------------
+Úkol A (Dekodér): Přelož depeši z mimozemského jazyka a spočítej poplatek za vízum.
+Metody k použití: .replaceAll(), .split(), .reverse(), .join(), .length.
+Specifikace:
+  - Nahraď ve zprávě tajná slova: "AHOJ" za "👾 GREETINGS" a "LIDÉ" za "BIOMASA".
+  - Pokud zpráva začíná slovem "REV:", vezmi zbytek zprávy (od indexu 4 dále pomocí .slice() nebo .substring()),
+    otoč jej pozpátku (převodem na pole přes .split(""), otočením .reverse() a spojením zpět přes .join(""))
+    a odstraň z něj případné mezery.
+  - Vypočítej poplatek za vízum: co znak ve finální depeši, to 10 galaktických kreditů (.length * 10).
+
+Úkol B (Důstojník & Cookies): Ukládej jméno sloužícího důstojníka a počet odbavených mimozemšťanů do cookies.
+Metody k použití: document.cookie, .split(), .includes(), .trim().
+Specifikace:
+  - Při přihlášení ulož cookie "officer_name" s platností na 1 den.
+  - Při schválení/karanténě inkrementuj počet odbavených a ulož do cookie "processed_count".
+  - Při načtení stránky přečti document.cookie, naparsuj hodnoty a zobraz: "Důstojník: [Jméno] | Odbaveno: [Počet] mimozemšťanů".
+
+--------------------------------------------------------------------------------
+💎 BONUS PRO MISTRY
+--------------------------------------------------------------------------------
+1. Přidej vyhledávání v depeši s vizuálním zvýrazněním nalezeného slova (např. pomocí .indexOf() nebo nahrazením za <mark>).
+2. Vytvoř tlačítko pro "Smazání databáze" (resetování cookies a statistik).
+
+Vzhůru ke hvězdám, vesmírný důstojníku! "Sloužím stanici, chráním galaxii!" 🚀
+================================================================================
+-->
+
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galactic Border Control - Terminal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="crt-screen">
+        <header class="terminal-header">
+            <div class="header-logo">👽 ORBITAL BORDER CONTROL v2.6</div>
+            <div class="system-status">SYSTEM: ONLINE | SEC-LEVEL: MAX</div>
+        </header>
+
+        <!-- PŘIHLÁŠENÍ DŮSTOJNÍKA (COOKIE MODUL) -->
+        <section class="officer-section">
+            <div class="terminal-box">
+                <h3>🔑 Identifikace Hraničního Důstojníka (Cookies)</h3>
+                <div class="officer-controls">
+                    <input type="text" id="officer-input" placeholder="Zadej své služební jméno...">
+                    <button id="btn-login" class="btn btn-primary">Přihlásit se</button>
+                    <button id="btn-reset" class="btn btn-danger">Smazat záznamy</button>
+                </div>
+                <div class="officer-status" id="officer-display">
+                    Status: <span class="blink">Čekám na přihlášení důstojníka...</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- RYCHLÝ NAČÍTAČ TESTOVACÍCH PŘÍPADŮ -->
+        <section class="cases-section">
+            <div class="case-buttons">
+                <span class="label">Předvolby subjektů:</span>
+                <button class="btn-case" onclick="loadCase('case1')">👽 Xorg (Základní)</button>
+                <button class="btn-case" onclick="loadCase('case2')">☣️ Kyselinový pašerák</button>
+                <button class="btn-case" onclick="loadCase('case3')">👨‍🚀 Velvyslanec ze Země</button>
+                <button class="btn-case" onclick="loadCase('case4')">🛸 Špión s depeší</button>
+            </div>
+        </section>
+
+        <main class="terminal-grid">
+            <!-- LEVÝ PANEL: VSTUPNÍ DATA -->
+            <section class="input-panel">
+                <div class="terminal-box">
+                    <h2>📥 Dokladové a depešní údaje</h2>
+
+                    <div class="form-group">
+                        <label for="passport-input">ID Galaktického Pasu:</label>
+                        <input type="text" id="passport-input" placeholder="např.   xorg-7b   ">
+                        <small>🥉 Trim, UpperCase, PadStart zleva na 8 znaků, prefix GAL-</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="planet-input">Domovská planeta:</label>
+                        <input type="text" id="planet-input" placeholder="např. earth-prime">
+                        <small>🥉 Trim, UpperCase | 🥈 startsWith("EARTH")</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="security-input">Poznámka bezpečnostního skeneru:</label>
+                        <textarea id="security-input" rows="2"
+                            placeholder="např. Subjekt má podivně vysokou teplotu a krevní oběh tvoří kyselina!"></textarea>
+                        <small>🥈 .includes("kyselina" / "zbran"), .endsWith("!")</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message-input">Zachycená depeše (šifra):</label>
+                        <textarea id="message-input" rows="2" placeholder="např. REV:S_A_M_O_I_B :É_D_I_L"></textarea>
+                        <small>🥇 .replaceAll(), .slice(), .split().reverse().join()</small>
+                    </div>
+
+                    <!-- HLEDÁNÍ V DEPEŠI (BONUS) -->
+                    <div class="form-group bonus-group">
+                        <label for="search-input">💎 Hledat slovo v depeši (Bonus):</label>
+                        <div class="search-controls">
+                            <input type="text" id="search-input" placeholder="Slovo k nalezení...">
+                            <button id="btn-search" class="btn btn-secondary">Vyhledat</button>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button id="btn-analyze" class="btn btn-accent">⚡ Prověřit Subjekt</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRAVÝ PANEL: TERMINÁL ROZHODNUTÍ -->
+            <section class="output-panel">
+                <div class="terminal-box green-glowing">
+                    <h2>🖥️ Výstup z bezpečnostní databáze</h2>
+
+                    <div class="output-item">
+                        <span class="out-label">Registrační kód pasu:</span>
+                        <div class="out-val" id="output-passport">-</div>
+                    </div>
+
+                    <div class="output-item">
+                        <span class="out-label">Očištěná planeta:</span>
+                        <div class="out-val" id="output-planet">-</div>
+                    </div>
+
+                    <div class="output-item">
+                        <span class="out-label">Bezpečnostní Status:</span>
+                        <div id="output-security" class="status-box status-unknown">ČEKÁM NA ANALÝZU</div>
+                    </div>
+
+                    <div class="output-item">
+                        <span class="out-label">Dekódovaná depeše:</span>
+                        <div class="out-val depeše-box" id="output-message">-</div>
+                    </div>
+
+                    <div class="output-item">
+                        <span class="out-label">Vízový poplatek:</span>
+                        <div class="out-val highlight"><span id="output-visa-fee">0</span> galaktických kreditů</div>
+                    </div>
+
+                    <div class="decision-controls">
+                        <button id="btn-approve" class="btn btn-success" disabled>✅ Povolit vstup</button>
+                        <button id="btn-quarantine" class="btn btn-warning" disabled>☣️ Poslat do Karantény</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="terminal-footer">
+            <div>Staniční čas: <span id="current-time">--:--:--</span></div>
+            <div>Didaktická aplikace - JS String & Cookies Playground</div>
+        </footer>
+    </div>
+
+    <!-- PRO STUDENTY: Změňte "script.js" na "script-students.js" a implementujte své řešení! -->
+    <script src="script.js"></script>
+
+    <!-- Funkce pro rychlé předvolby případů (ponecháno v HTML pro čistotu učebních skriptů) -->
+    <script>
+        function loadCase(caseKey) {
+            const cases = {
+                case1: {
+                    passport: "  xorg-alpha-9  ",
+                    planet: "   xorg-prime   ",
+                    security: "Subjekt má klidný puls, žádné anomálie.",
+                    message: "AHOJ, jsme mírumilovní a vezeme vzorky hornin."
+                },
+                case2: {
+                    passport: "bad-99",
+                    planet: "slizov",
+                    security: "Biometrické senzory detekovaly zbran a vysoký výskyt nebezpečné tekutiny (kyselina)!",
+                    message: "Nic nevezu, pusťte mě dál!"
+                },
+                case3: {
+                    passport: "   earth-777-vip  ",
+                    planet: "earth-prime",
+                    security: "Diplomatický doprovod.",
+                    message: "Diplomatická depeše: AHOJ LIDÉ, zdravíme vaši stanici."
+                },
+                case4: {
+                    passport: "spion-007",
+                    planet: "   mars-sector-x   ",
+                    security: "Pozor, mluví pozpátku a tají účel cesty!",
+                    message: "REV:E_D_I_L _Y_N_E_D_A_R_K_O_P _O_V_U_N_V_Z_A _J_O_H_A"
+                }
+            };
+
+            const selected = cases[caseKey];
+            if (selected) {
+                document.getElementById('passport-input').value = selected.passport;
+                document.getElementById('planet-input').value = selected.planet;
+                document.getElementById('security-input').value = selected.security;
+                document.getElementById('message-input').value = selected.message;
+
+                // Vizuální zpětná vazba
+                const btn = event.currentTarget;
+                btn.style.backgroundColor = '#00ff66';
+                btn.style.color = '#000';
+                setTimeout(() => {
+                    btn.style.backgroundColor = '';
+                    btn.style.color = '';
+                }, 400);
+            }
+        }
+
+        // Aktualizace času v patičce
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('current-time').textContent = now.toLocaleTimeString();
+        }, 1000);
+    </script>
+</body>
+
+</html>
